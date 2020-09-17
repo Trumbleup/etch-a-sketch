@@ -8,13 +8,16 @@ const resetButton = document.createElement('button');
 resetButton.setAttribute('id', 'reset');
 resetButton.innerHTML = 'Reset';
 
+let randomColor = Math.floor(Math.random()*16777215).toString(16);
+
 document.body.appendChild(resetButton);
 document.body.appendChild(container);
 
 
-setGrid(16);
 
-function setGrid(number) {
+setGrid(16, randomColor);
+
+function setGrid(number, color) {
 	if (number == null || number == '') {
 		setGrid(16);
 	}
@@ -26,12 +29,11 @@ function setGrid(number) {
 			const square = document.createElement('div');
 			const squareWidth = ((1/number) * parseInt(container.style.width)) - 1;
 			const squareHeight = ((1/number) * parseInt(container.style.height)) - 1;
-			square.classList.add('square', 'black');
+			square.classList.add('square');
 			square.style.width = `${squareWidth}px`;
 			square.style.height = `${squareHeight}px`;
 			square.addEventListener('mouseenter', () => {
-				square.classList.remove('black');
-				square.classList.add('white');
+				square.style.backgroundColor = '#' + randomColor;
 			})
 			row.appendChild(square);
 		}
@@ -39,12 +41,11 @@ function setGrid(number) {
 	}
 }
 
+container.addEventListener('mouseenter', () => {
+	randomColor = Math.floor(Math.random()*16777215).toString(16);
+})
+
 resetButton.addEventListener('click', () => {
-	const squares = container.querySelectorAll('.square');
-	squares.forEach(square => {
-		square.classList.remove('white');
-		square.classList.add('black');
-	})
 	const newSquares = prompt("How many squares per side should the new sketch have?");
 	container.innerHTML = '';
 	setGrid(newSquares);
